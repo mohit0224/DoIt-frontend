@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { toast } from "sonner";
 
 const TaskList = () => {
-	const { getAllTasks, view, searchBoxValue } = useData();
+	const { getAllTasks, view, searchBoxValue, isLoading } = useData();
 	const allTasks = useSelector((state) => state.taskSlice.allTask);
 
 	const handleChange = async (e, id) => {
@@ -49,8 +49,10 @@ const TaskList = () => {
 	return (
 		<div className="hiddenScrollbar pt-5 min-h-40 max-h-96 overflow-y-scroll">
 			<ul className={`${view && "flex flex-wrap gap-5"}`}>
-				{allTasks.length === 0 ? (
+				{isLoading ? (
 					<li>Loading...</li>
+				) : allTasks.length === 0 ? (
+					<li>No data found.</li>
 				) : searchData.length === 0 ? (
 					<li>No data found.</li>
 				) : (

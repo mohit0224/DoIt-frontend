@@ -3,11 +3,13 @@ import authServices from "@/api-services/authService";
 import { Button } from "@/components/ui/button";
 import { useData } from "@/context/DataContext";
 import { currentUser } from "@/store/slices/authSlice";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 
 const SideBar = () => {
+	const navigate = useRouter();
 	const dispatch = useDispatch();
 	const { openSideBar, getTasks, setGetTasks } = useData();
 	const user = useSelector((state) => state.authSlice.user);
@@ -36,6 +38,7 @@ const SideBar = () => {
 			await res;
 			localStorage.removeItem("token");
 			dispatch(currentUser({}));
+			navigate.replace("/login");
 		} catch (error) {
 			console.log(error);
 		}

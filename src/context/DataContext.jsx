@@ -16,6 +16,7 @@ export const DataProvider = ({ children }) => {
 	const [openSideBar, setOpenSideBar] = useState(true);
 	const [getTasks, setGetTasks] = useState("all tasks");
 	const [searchBoxValue, setSearchBoxValue] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
 
 	const monitorCookieAndDeleteToken = () => {
 		const checkInterval = 10000;
@@ -40,6 +41,7 @@ export const DataProvider = ({ children }) => {
 
 	const getAllTasks = async () => {
 		try {
+			setIsLoading(true);
 			if (getTasks === "all tasks") {
 				const result = await taskServices.getAllTasks();
 				dispatch(getAllTask(result.data.data));
@@ -61,6 +63,9 @@ export const DataProvider = ({ children }) => {
 			}
 		} catch (error) {
 			console.log(err);
+			setIsLoading(false);
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
@@ -101,6 +106,7 @@ export const DataProvider = ({ children }) => {
 				getTasks,
 				setGetTasks,
 				getAllTasks,
+				isLoading,
 			}}
 		>
 			{children}
